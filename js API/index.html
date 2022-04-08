@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OOP</title>
+    <link rel="stylesheet" href="../bootstrap-5.1.3/dist/css/bootstrap.css">
+</head>
+<style>
+    .img{
+        width : 110px;
+        height : 110px;
+    }
+</style>
+<body>
+    <div class="container-fluid">
+        <table class="table table-striped">
+            <thead>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Image</th>
+            </thead>
+            <tbody id="table">
+                
+            </tbody>
+        </table>
+    </div>
+    
+    
+</body>
+<script src="../bootstrap-5.1.3/dist/js/bootstrap.js"></script>
+<script>
+    let api = async() => {
+        let response = await fetch ('https://fakestoreapi.com/products',{
+            method : 'GET',
+            header : {
+                'Content-Type': 'application/json'
+            }
+        });
+        let data = await response.json();
+        let tbody = document.getElementById('table');
+        let myList = "";
+        for (i=0; i<data.length;i++){
+             myList += `
+                <tr>
+                    <td>${data[i].id}</td>
+                    <td>${data[i].title}</td>
+                    <td>${data[i].price}</td>
+                    <td><img src="${data[i].image}" onmouseover="showBig(this)" onmouseleave="showNormal(this)" class="img" alt=""></td>
+                    <td>        
+                        <a href="${data[i].image}"><button class="btn btn-success" >Look Image</button></a>
+                    </td>
+                </tr>
+            `;
+            tbody.innerHTML = myList;
+        }
+    }
+    function showBig(x){
+        x.style.width = '230px';
+        x.style.height = '230px'; 
+    }
+    function showNormal(x){
+        x.style.width = '110px';
+        x.style.height = '110px'; 
+    }
+    api();
+
+      /*
+    let apiCall = new XMLHttpRequest();
+    apiCall.open('GET', 'https://fakestoreapi.com/products');
+    apiCall.send();
+    apiCall.onreadystatechange = function() {
+        if (apiCall.readyState === 4) {
+            let response = JSON.parse(apiCall.responseText);
+            console.log(response);
+        }
+    }
+    */
+</script>
+</html>
